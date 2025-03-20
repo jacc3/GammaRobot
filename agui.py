@@ -12,8 +12,8 @@ import math
 import json
 import xml.etree.ElementTree as ET
 import re
+from PIL import Image, ImageTk  
 
-# Existing code (unchanged)
 class Spectra:
     def __init__(self, file, counts, compressed):
         self.iso_name = file[file.rindex('/')+1:file.rindex('_')]
@@ -180,7 +180,7 @@ def determine_isotope(all_peaks, all_prominences, isotopes):
     return peaks, top_5_names, top_5_probabilities
 
 # Modified plot_spectra to return the figure
-def plot_spectra(file, counts, peaks, true_peaks=None, height_vec=None, x_lim=None, guess_nm=None, most_probable_isotope=None):
+def plot_spectra(file, counts, peaks, true_peaks=None, height_vec=None, x_lim=None, guess_nm=None, most_probable_isotope=None, num_isotopes=1):
     rename_file = file.replace('.n42','')
     x = range(0,len(counts))
     fig = Figure(figsize=(5, 2.5), dpi=100)
@@ -194,18 +194,21 @@ def plot_spectra(file, counts, peaks, true_peaks=None, height_vec=None, x_lim=No
     ax.set_xlim(0, 1500)
     if x_lim:
         ax.set_xlim(right=x_lim)
-    ax.set_title(f"Isotope ID: {most_probable_isotope}")
+    if num_isotopes == 1:
+        ax.set_title(f"Isotope ID: {most_probable_isotope} (1 isotope)")
+    else:
+        ax.set_title(f"Isotope ID: {most_probable_isotope} and {guess_nm.split(', ')[1]} (2 isotopes)")
     return fig
 
 # Modified isotopeID to return the figure and results
-def isotopeID(file, counts, isotopes, compressed):
+def isotopeID(file, counts, isotopes, compressed, num_isotopes=1):
     spect = Spectra(file, counts, compressed)
     [peaks, peaks_dict] = find_peaks(spect.counts, prominence=spect.prom, width=spect.wdt_arr, rel_height=0.6, height=spect.height_vec, distance=4)
     final_peaks, guess_names, guess_probabilities = determine_isotope(peaks[peaks>42], peaks_dict['prominences'][peaks>42], isotopes)
     most_probable_index = np.argmax(guess_probabilities)
     most_probable_isotope = guess_names[most_probable_index]
     plt_peaks = peaks[peaks_dict['prominences']>0.1*np.mean(peaks_dict['prominences'])]
-    fig = plot_spectra(file, spect.counts, plt_peaks, guess_nm=", ".join(guess_names), most_probable_isotope=most_probable_isotope)
+    fig = plot_spectra(file, spect.counts, plt_peaks, guess_nm=", ".join(guess_names), most_probable_isotope=most_probable_isotope, num_isotopes=num_isotopes)
     return fig, guess_names, guess_probabilities
 
 # Dose calculation functions
@@ -244,6 +247,7 @@ def parse_n42(file_path, peaks):
     counts_at_peaks = {peak: counts[peak] for peak in peaks if 0 <= peak < len(counts)}
     
     return counts_at_peaks
+
 def czt_efficiency(energy, eta0=1.0, alpha=0.1):
     """
     Calculate the efficiency of a CZT detector based on energy.
@@ -286,41 +290,93 @@ class App:
         self.style = ttk.Style()
         self.style.theme_use('clam')
 
-        # Create a frame for the top section
-        self.top_frame = ttk.Frame(root)
+        # Create a main frame to hold everything
+        self.main_frame = ttk.Frame(root)
+        self.main_frame.pack(fill=tk.BOTH, expand=True)
+
+        # Add a canvas and scrollbar
+        self.canvas = tk.Canvas(self.main_frame)
+        self.scrollbar = ttk.Scrollbar(self.main_frame, orient=tk.VERTICAL, command=self.canvas.yview)
+        self.scrollable_frame = ttk.Frame(self.canvas)
+
+        # Configure the canvas
+        self.scrollable_frame.bind(
+            "<Configure>",
+            lambda e: self.canvas.configure(
+                scrollregion=self.canvas.bbox("all")
+            )
+        )
+        self.canvas.create_window((0, 0), window=self.scrollable_frame, anchor="nw")
+        self.canvas.configure(yscrollcommand=self.scrollbar.set)
+
+        # Pack the canvas and scrollbar
+        self.canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        self.scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+        # Create a frame for the top section inside the scrollable frame
+        self.top_frame = ttk.Frame(self.scrollable_frame)
         self.top_frame.pack(fill=tk.X, padx=10, pady=10)
 
-        self.label = ttk.Label(self.top_frame, text="Select a .n42 file to process:", font=('Helvetica', 12))
+        # Section for .n42 file selection
+        self.n42_frame = ttk.Frame(self.top_frame)
+        self.n42_frame.pack(fill=tk.X, pady=5)
+
+        self.label = ttk.Label(self.n42_frame, text="Select a .n42 file to process:", font=('Helvetica', 12))
         self.label.pack(side=tk.LEFT, padx=5, pady=5)
 
-        self.file_path_label = ttk.Label(self.top_frame, text="No file selected", font=('Helvetica', 10))
+        self.file_path_label = ttk.Label(self.n42_frame, text="No file selected", font=('Helvetica', 10))
         self.file_path_label.pack(side=tk.LEFT, padx=5, pady=5)
 
-        self.browse_button = ttk.Button(self.top_frame, text="Browse", command=self.browse_n42_file)
+        self.browse_button = ttk.Button(self.n42_frame, text="Browse", command=self.browse_n42_file)
         self.browse_button.pack(side=tk.LEFT, padx=5, pady=5)
 
-        self.txt_label = ttk.Label(self.top_frame, text="Select a .txt file for isotopes:", font=('Helvetica', 12))
+        # Section for .txt file selection
+        self.txt_frame = ttk.Frame(self.top_frame)
+        self.txt_frame.pack(fill=tk.X, pady=5)
+
+        self.txt_label = ttk.Label(self.txt_frame, text="Select a .txt file for isotopes:", font=('Helvetica', 12))
         self.txt_label.pack(side=tk.LEFT, padx=5, pady=5)
 
-        self.txt_file_path_label = ttk.Label(self.top_frame, text="No file selected", font=('Helvetica', 10))
+        self.txt_file_path_label = ttk.Label(self.txt_frame, text="No file selected", font=('Helvetica', 10))
         self.txt_file_path_label.pack(side=tk.LEFT, padx=5, pady=5)
 
-        self.browse_txt_button = ttk.Button(self.top_frame, text="Browse", command=self.browse_txt_file)
+        self.browse_txt_button = ttk.Button(self.txt_frame, text="Browse", command=self.browse_txt_file)
         self.browse_txt_button.pack(side=tk.LEFT, padx=5, pady=5)
 
+        # Section for image selection
+        self.image_frame = ttk.Frame(self.top_frame)
+        self.image_frame.pack(fill=tk.X, pady=5)
+
+        self.image_label = ttk.Label(self.image_frame, text="Select a mapping .png file:", font=('Helvetica', 12))
+        self.image_label.pack(side=tk.LEFT, padx=5, pady=5)
+
+        self.image_path_label = ttk.Label(self.image_frame, text="No image selected", font=('Helvetica', 10))
+        self.image_path_label.pack(side=tk.LEFT, padx=5, pady=5)
+
+        self.browse_image_button = ttk.Button(self.image_frame, text="Browse", command=self.browse_image_file)
+        self.browse_image_button.pack(side=tk.LEFT, padx=5, pady=5)
+
+        # Process button
         self.process_button = ttk.Button(self.top_frame, text="Process File", command=self.process_file)
-        self.process_button.pack(side=tk.LEFT, padx=5, pady=5)
+        self.process_button.pack(pady=10)
 
         # Create a frame for the plot
-        self.plot_frame = ttk.Frame(root)
+        self.plot_frame = ttk.Frame(self.scrollable_frame)
         self.plot_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
 
         # Create a frame for the results
-        self.result_frame = ttk.Frame(root)
+        self.result_frame = ttk.Frame(self.scrollable_frame)
         self.result_frame.pack(fill=tk.X, padx=10, pady=10)
 
         self.result_label = ttk.Label(self.result_frame, text="Results will be displayed here", font=('Helvetica', 12))
         self.result_label.pack(pady=10)
+
+        # Create a frame for the image
+        self.image_display_frame = ttk.Frame(self.scrollable_frame)
+        self.image_display_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
+
+        self.image_display_label = ttk.Label(self.image_display_frame)
+        self.image_display_label.pack()
 
         self.isotopes = {}
 
@@ -332,10 +388,18 @@ class App:
         self.txt_file_path = filedialog.askopenfilename(filetypes=[("Text files", "*.txt")])
         self.txt_file_path_label.config(text=self.txt_file_path)
 
+    def browse_image_file(self):
+        self.image_file_path = filedialog.askopenfilename(filetypes=[("Image files", "*.jpg *.jpeg *.png *.bmp *.gif")])
+        self.image_path_label.config(text=self.image_file_path)
+
     def process_file(self):
         if hasattr(self, 'n42_file_path') and ".n42" in self.n42_file_path and os.path.exists(self.n42_file_path):
             if hasattr(self, 'txt_file_path') and ".txt" in self.txt_file_path and os.path.exists(self.txt_file_path):
-            # Read in isotope database
+                # Prompt user for the number of isotopes
+                num_isotopes = messagebox.askquestion("Number of Isotopes", "Do you want to identify 2 isotopes? If 1, select 'no'", icon='question', type='yesno')
+                num_isotopes = 2 if num_isotopes == 'yes' else 1
+
+                # Read in isotope database
                 with open(self.txt_file_path) as f:
                     for lines in f.readlines():
                         line = lines.split(';')
@@ -354,17 +418,17 @@ class App:
                 RadInstrumentData = xmlwrapper.xmlread(self.n42_file_path)
                 counts = RadInstrumentData.RadMeasurement.Spectrum[1].ChannelData.text
                 compressed = True
-                fig, guess_names, guess_probabilities = isotopeID(self.n42_file_path, counts, self.isotopes, compressed)
+                fig, guess_names, guess_probabilities = isotopeID(self.n42_file_path, counts, self.isotopes, compressed, num_isotopes)
 
-            # Display the plot in the GUI
+                # Display the plot in the GUI
                 self.display_plot(fig)
 
-            # Display the results
+                # Display the results
                 result_text = "Top Isotopes Identified:\n"
                 for i in range(len(guess_names)):
                     result_text += f"{guess_names[i][3:]}: {guess_probabilities[i]:.4f}\n"
 
-            # Calculate dose
+                # Calculate dose
                 spect = Spectra(self.n42_file_path, counts, compressed)
                 [peaks, peaks_dict] = find_peaks(spect.counts, prominence=spect.prom, width=spect.wdt_arr, rel_height=0.6, height=spect.height_vec, distance=4)
                 energies = peaks[peaks_dict['prominences']>0.1*np.mean(peaks_dict['prominences'])]
@@ -388,20 +452,24 @@ class App:
                 dose_text += f"Percentage of Dose Limit: {dose_result['Percentage of Dose Limit']:.7f}%\n"
                 dose_text += f"Status: {dose_result['Status']}\n"
 
-            # Calculate activity
+                # Calculate activity
                 activity = calculate_activity(spect.counts, energies, live_time)
                 activity_text = f"\nActivity Calculation Results:\n"
                 activity_text += f"Activity (Bq): {activity:.7f}\n"
 
                 self.result_label.config(text=result_text + dose_text + activity_text)
 
-            # Write results to output file
+                # Write results to output file
                 output_file_path = self.n42_file_path.replace('.n42', '_results.txt')
                 with open(output_file_path, 'w') as output_file:
                     output_file.write(result_text)
                     output_file.write(dose_text)
                     output_file.write(activity_text)
                 messagebox.showinfo("Success", f"Results written to {output_file_path}")
+
+                # Display the image if selected
+                if hasattr(self, 'image_file_path') and os.path.exists(self.image_file_path):
+                    self.display_image(self.image_file_path)
             else:
                 messagebox.showerror("Error", "Incorrect .txt file type or file not selected!")
         else:
@@ -409,16 +477,28 @@ class App:
 
     def display_plot(self, fig):
         # Clear previous plot
-        if hasattr(self, 'canvas'):
-            self.canvas.get_tk_widget().destroy()
+        if hasattr(self, 'canvas_plot'):
+            self.canvas_plot.get_tk_widget().destroy()
 
         # Embed the new plot
-        self.canvas = FigureCanvasTkAgg(fig, master=self.plot_frame)
-        self.canvas.draw()
-        self.canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=True)
+        self.canvas_plot = FigureCanvasTkAgg(fig, master=self.plot_frame)
+        self.canvas_plot.draw()
+        self.canvas_plot.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=True)
+
+    def display_image(self, image_path):
+        # Clear previous image
+        if hasattr(self, 'image_tk'):
+            self.image_display_label.config(image="")
+            self.image_tk = None
+
+        # Load and display the new image
+        image = Image.open(image_path)
+        image = image.resize((900, 900), Image.Resampling.LANCZOS)
+        self.image_tk = ImageTk.PhotoImage(image)
+        self.image_display_label.config(image=self.image_tk)
     
 
 if __name__ == "__main__":
-    root = ThemedTk(theme="arc")  # Use a modern theme
+    root = ThemedTk(theme="arc") 
     app = App(root)
     root.mainloop()
