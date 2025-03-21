@@ -1,0 +1,4 @@
+Notes: The Position Finder seems to be good to go, besides maybe a few thing can be changed to improve it. RUN the .py for position finder not the .ipynb file
+
+Bef file output follows:
+Time, npix, energy(eV), module, X, Y, Z
