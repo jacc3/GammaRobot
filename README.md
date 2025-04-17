@@ -1,3 +1,2 @@
 # GammaRobot
-Merge of 2 previous gamma robot code
-hi guys ill edit the read me later
+Merge of 3 different gamma vision robot code. Email questions to jacc@umich.edu.
