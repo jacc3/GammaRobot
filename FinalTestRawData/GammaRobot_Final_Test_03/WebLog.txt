@@ -1,0 +1,5 @@
+2025/03/21 18:45:18> New measurement dir: /media/SD_Card/PolarisData/20250321-184512_GammaRobot_Final_Test_03
+2025/03/21 18:45:18> Create new ANSI file: /media/SD_Card/PolarisData/20250321-184512_GammaRobot_Final_Test_03/GammaRobot_Final_Test_03.n42
+2025/03/21 18:45:25> Isotope Detected: Unknown:41_keV (11746474798716502756)
+2025/03/21 18:48:52> Saving state(-1): /media/SD_Card/PolarisData/20250321-184512_GammaRobot_Final_Test_03/20250321-184852_SS
+2025/03/21 18:48:52> Stopping measurement.

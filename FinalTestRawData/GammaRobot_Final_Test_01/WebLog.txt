@@ -1,0 +1,4 @@
+2025/03/21 18:36:05> New measurement dir: /media/SD_Card/PolarisData/20250321-183558_GammaRobot_Final_Test_01
+2025/03/21 18:36:05> Create new ANSI file: /media/SD_Card/PolarisData/20250321-183558_GammaRobot_Final_Test_01/GammaRobot_Final_Test_01.n42
+2025/03/21 18:39:19> Saving state(-1): /media/SD_Card/PolarisData/20250321-183558_GammaRobot_Final_Test_01/20250321-183919_SS
+2025/03/21 18:39:19> Stopping measurement.
