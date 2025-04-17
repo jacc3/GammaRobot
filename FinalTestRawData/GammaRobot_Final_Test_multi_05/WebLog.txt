@@ -1,0 +1,5 @@
+2025/03/21 19:32:57> New measurement dir: /media/SD_Card/PolarisData/20250321-193251_GammaRobot_Final_Test_multi_05
+2025/03/21 19:32:57> Create new ANSI file: /media/SD_Card/PolarisData/20250321-193251_GammaRobot_Final_Test_multi_05/GammaRobot_Final_Test_multi_05.n42
+2025/03/21 19:32:58> Isotope Detected: Cs-137 (11825605134216413928)
+2025/03/21 19:36:26> Saving state(-1): /media/SD_Card/PolarisData/20250321-193251_GammaRobot_Final_Test_multi_05/20250321-193626_SS
+2025/03/21 19:36:26> Stopping measurement.

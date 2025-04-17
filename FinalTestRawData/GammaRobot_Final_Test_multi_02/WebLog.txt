@@ -1,0 +1,67 @@
+2025/03/21 19:15:48> New measurement dir: /media/SD_Card/PolarisData/20250321-191541_GammaRobot_Final_Test_multi_02
+2025/03/21 19:15:48> Create new ANSI file: /media/SD_Card/PolarisData/20250321-191541_GammaRobot_Final_Test_multi_02/GammaRobot_Final_Test_multi_02.n42
+2025/03/21 19:16:03> Isotope Detected: Unknown:1183_keV (8163897370474342933)
+2025/03/21 19:16:08> Isotope Un-Detected: Unknown:1183_keV (8163897370474342933)
+2025/03/21 19:16:10> Isotope Detected: Unknown:1183_keV (8163897370474342933)
+2025/03/21 19:16:10> Isotope Detected: Unknown:40_keV (11746473392307873625)
+2025/03/21 19:16:11> Isotope Un-Detected: Unknown:1183_keV (8163897370474342933)
+2025/03/21 19:16:14> Isotope Detected: Unknown:1183_keV (8163897370474342933)
+2025/03/21 19:16:15> Isotope Un-Detected: Unknown:40_keV (11746473392307873625)
+2025/03/21 19:16:17> Isotope Un-Detected: Unknown:1183_keV (8163897370474342933)
+2025/03/21 19:16:29> Isotope Detected: Unknown:1181_keV (8163894557657084671)
+2025/03/21 19:16:31> Isotope Un-Detected: Unknown:1181_keV (8163894557657084671)
+2025/03/21 19:16:42> Isotope Detected: Unknown:1181_keV (8163894557657084671)
+2025/03/21 19:17:04> Isotope Un-Detected: Unknown:1181_keV (8163894557657084671)
+2025/03/21 19:17:04> Isotope Detected: Unknown:1183_keV (8163897370474342933)
+2025/03/21 19:17:09> AJAX: Set isotope from peak swipe: 661
+2025/03/21 19:17:10> Isotope Detected: Unknown:1181_keV (8163894557657084671)
+2025/03/21 19:17:10> Isotope Un-Detected: Unknown:1183_keV (8163897370474342933)
+2025/03/21 19:17:12> AJAX: Set isotope from peak swipe: 661
+2025/03/21 19:17:12> AJAX: Set isotope from peak swipe: 661
+2025/03/21 19:17:13> AJAX: Set isotope from peak swipe: 661
+2025/03/21 19:17:14> AJAX: Set isotope from peak swipe: 661
+2025/03/21 19:17:16> AJAX: Set isotope from peak swipe: 1181
+2025/03/21 19:17:17> AJAX: Set isotope from peak swipe: 1181
+2025/03/21 19:17:18> AJAX: Set isotope from peak swipe: 1181
+2025/03/21 19:17:22> Isotope Detected: Unknown:42_keV (11746476205125131887)
+2025/03/21 19:17:23> AJAX: Set isotope from peak swipe: 661
+2025/03/21 19:17:25> AJAX: Set isotope from peak swipe: 661
+2025/03/21 19:17:27> AJAX: Set isotope from peak swipe: 1181
+2025/03/21 19:17:30> Isotope Un-Detected: Unknown:1181_keV (8163894557657084671)
+2025/03/21 19:17:30> Isotope Detected: Unknown:1183_keV (8163897370474342933)
+2025/03/21 19:17:44> Isotope Detected: Unknown:1181_keV (8163894557657084671)
+2025/03/21 19:17:44> Isotope Un-Detected: Unknown:1183_keV (8163897370474342933)
+2025/03/21 19:17:49> Isotope Un-Detected: Unknown:1181_keV (8163894557657084671)
+2025/03/21 19:17:49> Isotope Detected: Unknown:1183_keV (8163897370474342933)
+2025/03/21 19:17:57> AJAX: Toggle custom color scale: ON
+2025/03/21 19:18:04> Isotope Detected: Unknown:1181_keV (8163894557657084671)
+2025/03/21 19:18:04> Isotope Un-Detected: Unknown:1183_keV (8163897370474342933)
+2025/03/21 19:18:05> AJAX: Toggle custom color scale: OFF
+2025/03/21 19:18:05> Isotope Un-Detected: Unknown:1181_keV (8163894557657084671)
+2025/03/21 19:18:05> Isotope Detected: Unknown:1183_keV (8163897370474342933)
+2025/03/21 19:18:08> Isotope Detected: Unknown:1181_keV (8163894557657084671)
+2025/03/21 19:18:08> Isotope Un-Detected: Unknown:1183_keV (8163897370474342933)
+2025/03/21 19:18:27> Isotope Un-Detected: Unknown:1181_keV (8163894557657084671)
+2025/03/21 19:18:27> Isotope Detected: Unknown:1183_keV (8163897370474342933)
+2025/03/21 19:18:33> Isotope Detected: Unknown:40_keV (11746473392307873625)
+2025/03/21 19:18:33> Isotope Un-Detected: Unknown:42_keV (11746476205125131887)
+2025/03/21 19:18:34> Isotope Detected: Unknown:1181_keV (8163894557657084671)
+2025/03/21 19:18:34> Isotope Un-Detected: Unknown:1183_keV (8163897370474342933)
+2025/03/21 19:18:38> Isotope Un-Detected: Unknown:1181_keV (8163894557657084671)
+2025/03/21 19:18:38> Isotope Detected: Unknown:1183_keV (8163897370474342933)
+2025/03/21 19:18:55> Isotope Detected: Unknown:1181_keV (8163894557657084671)
+2025/03/21 19:18:55> Isotope Un-Detected: Unknown:1183_keV (8163897370474342933)
+2025/03/21 19:19:04> Isotope Un-Detected: Unknown:1181_keV (8163894557657084671)
+2025/03/21 19:19:04> Isotope Detected: Unknown:1183_keV (8163897370474342933)
+2025/03/21 19:19:20> Isotope Un-Detected: Unknown:1183_keV (8163897370474342933)
+2025/03/21 19:19:20> Isotope Detected: Unknown:1185_keV (8163900183291601195)
+2025/03/21 19:19:22> Isotope Detected: Unknown:1183_keV (8163897370474342933)
+2025/03/21 19:19:22> Isotope Un-Detected: Unknown:1185_keV (8163900183291601195)
+2025/03/21 19:19:32> Isotope Un-Detected: Unknown:1183_keV (8163897370474342933)
+2025/03/21 19:19:32> Isotope Detected: Unknown:1185_keV (8163900183291601195)
+2025/03/21 19:19:35> Isotope Detected: Unknown:1183_keV (8163897370474342933)
+2025/03/21 19:19:35> Isotope Un-Detected: Unknown:1185_keV (8163900183291601195)
+2025/03/21 19:19:37> Isotope Detected: Unknown:1181_keV (8163894557657084671)
+2025/03/21 19:19:37> Isotope Un-Detected: Unknown:1183_keV (8163897370474342933)
+2025/03/21 19:20:03> Saving state(-1): /media/SD_Card/PolarisData/20250321-191541_GammaRobot_Final_Test_multi_02/20250321-192003_SS
+2025/03/21 19:20:03> Stopping measurement.
